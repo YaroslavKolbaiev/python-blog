@@ -28,7 +28,7 @@ from db_posts import (
 from forms import CommentForm, ContactForm, CreatePostForm, LoginForm, RegisterForm
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap5(app)
 
@@ -209,6 +209,8 @@ def contact():
     contact_form = ContactForm()
     if contact_form.validate_on_submit():
         password = os.environ.get("EMAIL_PASSWORD")
+        email_from = os.environ.get("EMAIL_FROM")
+        email_to = os.environ.get("EMAIL_TO")
         msg = (
             f"Name: {contact_form.name.data}\n"
             f"Email: {contact_form.email.data}\n"
@@ -217,10 +219,10 @@ def contact():
         )
         with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
             connection.starttls()
-            connection.login(user="for.dev.in.mail@gmail.com", password=str(password))
+            connection.login(user=str(email_from), password=str(password))
             connection.sendmail(
                 msg=f"Subject: Python blog contacts\n\n{msg}",
-                from_addr="for.dev.in.mail@gmail.com",
-                to_addrs="yaroslav_kolbaiev@icloud.com",
+                from_addr=str(email_from),
+                to_addrs=str(email_to),
             )
     return render_template("contact.html", form=contact_form)
