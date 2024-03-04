@@ -1,4 +1,5 @@
 from datetime import date
+import os
 import uuid
 from sqlalchemy import ForeignKey, String, Text, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session, relationship
@@ -6,7 +7,9 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash
 from forms import CreatePostForm, RegisterForm
 
-engine = create_engine("sqlite+pysqlite:///posts.db")
+# engine = create_engine("sqlite+pysqlite:///posts.db")
+URI = os.environ.get("POSTGRES_URI")
+engine = create_engine(str(URI))
 
 
 class Base(DeclarativeBase):
