@@ -15,6 +15,7 @@ from functools import wraps
 from werkzeug.security import check_password_hash
 from db_posts import (
     create_comment,
+    create_tables,
     get_posts,
     get_post,
     add_post,
@@ -45,6 +46,8 @@ gravatar = Gravatar(
     use_ssl=False,
     base_url=None,
 )
+
+create_tables()
 
 
 @login_manager.user_loader
