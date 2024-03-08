@@ -24,7 +24,7 @@
       <h2>No posts yet. Be the first to create one!</h2>
       {% endif %}
       <!-- Post preview-->
-      {% for post in all_posts %}
+      {% include 'messages.html' %} {% for post in all_posts %}
       <div class="post-preview">
         <a href="{{ url_for('show_post', post_id=post.id) }}">
           <h2 class="post-title">{{ post.title }}</h2>
@@ -55,7 +55,11 @@
 
       <!-- Pager-->
       <div class="d-flex justify-content-end mb-4">
-        <a class="btn btn-secondary text-uppercase" href="#!">Older Posts →</a>
+        <a
+          class="btn btn-secondary text-uppercase"
+          href="{{url_for('get_all_posts', limit=limit)}}"
+          >Older Posts →</a
+        >
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 from datetime import date
-import os
 import uuid
+import os
 from sqlalchemy import ForeignKey, String, Text, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session, relationship
 from flask_login import UserMixin
@@ -102,9 +102,9 @@ def register_user(form: RegisterForm):
         return new_user
 
 
-def get_posts():
+def get_posts(limit: int):
     with Session(engine) as session:
-        result = session.query(BlogPost)
+        result = session.query(BlogPost).order_by(BlogPost.date.desc()).limit(limit)
         posts = result.all()
         return posts
 

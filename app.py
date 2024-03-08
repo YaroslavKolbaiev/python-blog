@@ -142,9 +142,14 @@ def logout():
 
 
 @app.route("/")
-def get_all_posts():
-    posts = get_posts()
-    return render_template("index.html", all_posts=posts, current_user=current_user)
+@app.route("/<int:limit>")
+def get_all_posts(limit=3):
+    posts = get_posts(limit)
+    if len(posts) < limit:
+        flash("No more posts to show.")
+    return render_template(
+        "index.html", all_posts=posts, current_user=current_user, limit=limit + 3
+    )
 
 
 @app.route("/post/<post_id>", methods=["GET", "POST"])
